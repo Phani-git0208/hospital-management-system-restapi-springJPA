@@ -19,12 +19,12 @@ public class Controller {
     private final DoctorServiceimpl doctorService;
     private final PatientServiceimp patientService;
 
-    @GetMapping("/doctors")
+    @GetMapping("/admin/doctor")
     public List<DoctorDto> getAllDocters() {
         return doctorService.getAllDocters();
     }
 
-    @GetMapping("/patient")
+    @GetMapping("/public/patient")
     public List<PatientDto> getAllPatient() {
         return patientService.getAllPatient();
 

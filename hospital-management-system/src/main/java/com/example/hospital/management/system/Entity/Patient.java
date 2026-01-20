@@ -1,6 +1,7 @@
 package com.example.hospital.management.system.Entity;
 
 import com.example.hospital.management.system.Entity.type.bloodgroup;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ public class Patient {
 
     @OneToOne
     @JoinColumn
+    @JsonManagedReference
     private Insurance insurance;
 
     @OneToMany(mappedBy = "patient")

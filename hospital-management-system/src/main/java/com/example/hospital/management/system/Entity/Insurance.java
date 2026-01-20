@@ -1,6 +1,7 @@
 package com.example.hospital.management.system.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class Insurance  {
     private LocalDateTime createdAt;
 
     @OneToOne(mappedBy = "insurance")
+    @JsonBackReference
     private Patient patient;
 
 
