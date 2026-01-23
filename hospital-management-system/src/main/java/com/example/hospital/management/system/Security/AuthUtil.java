@@ -25,6 +25,7 @@ public class AuthUtil {
     public String generateAccessToken(User user){
         return Jwts.builder()
                 .setSubject(user.getUsername())
+                .claim("role", user.getRole().name())
                 .claim("userId",user.getId().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000*60*10))

@@ -1,27 +1,17 @@
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Patients from "./pages/Patients";
+import Doctors from "./pages/Doctors";
 
 function App() {
-  const [patients, setPatients] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/public/patient")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setPatients(data);
-      })
-      .catch(err => console.error("Error:", err));
-  }, []);
-
   return (
-    <div>
-      <h1>Hospital Management System</h1>
-
-      <h2>Patients List</h2>
-      {patients.map(p => (
-        <p key={p.id}>{p.name}</p>
-      ))}
-    </div>
+    <Routes>
+      <Route path="/auth/login" element={<Login />} />
+      <Route path="/auth/signup" element={<Signup />} />
+      <Route path="/patients" element={<Patients />} />
+      <Route path="/doctors" element={<Doctors />} />
+    </Routes>
   );
 }
 

@@ -4,6 +4,7 @@ import com.example.hospital.management.system.Dto.LoginRequestDto;
 import com.example.hospital.management.system.Dto.LoginResponceDto;
 import com.example.hospital.management.system.Dto.SignUpResponceDto;
 import com.example.hospital.management.system.Entity.User;
+import com.example.hospital.management.system.Entity.type.Role;
 import com.example.hospital.management.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,7 +43,9 @@ public class AuthService {
         user = userRepository.save(user.builder()
                 .username(signUpRequestDto.getUsername())
                 .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-                .build());
+                .role(Role.PATIENT)
+                .build()
+        );
 
         return new SignUpResponceDto(user.getId(), user.getUsername());
     }
