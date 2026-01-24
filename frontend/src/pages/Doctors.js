@@ -3,23 +3,28 @@ import { useEffect, useState } from "react";
 function Doctors() {
   const [doctors, setDoctors] = useState([]);
 
- useEffect(() => {
-  const token = localStorage.getItem("token");
-  console.log("TOKEN:", token);
-
-  fetch("http://localhost:8080/admin/doctor", {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-    .then(res => {
-      console.log("STATUS:", res.status);
-      if (!res.ok) throw new Error("Unauthorized");
-      return res.json();
+  useEffect(() => {
+    fetch("http://localhost:8080/admin/doctor", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     })
-    .then(data => console.log("DATA:", data))
-    .catch(err => console.error(err));
-}, []);
+      .then(res => {
+        if (!res.ok) throw new Error("Unauthorized");
+        return res.json();
+      })
+      .then(data => setDoctors(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  return (
+    <div>
+      <h2>Doctors (Protected)</h2>
+      {doctors.map(d => (
+        <p key={d.id}>{d.name}</p>
+      ))}
+    </div>
+  );
 }
 
 export default Doctors;

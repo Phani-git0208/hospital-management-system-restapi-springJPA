@@ -1,63 +1,68 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "./services/authService";
+
+function getRoleFromToken(token) {
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  return payload.role;
+}
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-    const response = await fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password
-      })
-    });
+  const navigate = useNavigate();
 
-    if (!response.ok) {
-      alert("Login failed");
-      return;
+  const handleLogin = async () => {
+  try {
+    const data = await loginUser(username, password);
+
+    console.log("Backend response:", data);
+
+    // Save JWT token
+    localStorage.setItem("token", data.jwt);
+
+
+     // Get role from token
+    const role = getRoleFromToken(data.jwt);
+    console.log("Role:", role);
+
+    // Redirect based on role
+    if (role === "ADMIN") {
+      navigate("/admin/doctor");
+    } else if (role === "DOCTOR") {
+      navigate("/doctor");
+    } else if (role === "PATIENT") {
+      navigate("/me");
+    } else {
+      alert("Unknown role");
     }
 
-    const data = await response.json();
+    alert("Login successful, token saved");
+  } catch (error) {
+    console.error("Login failed:", error);
+    alert("Login failed");
+  }
+};
 
-    console.log("Login response:", data);
-
-    // Save token in browser
-    localStorage.setItem("token", data.token);
-
-    alert("Login successful!");
-  };
 
   return (
     <div>
-      <h2>Login</h2>
-
       <input
-        type="text"
         placeholder="Username"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
       />
-
-      <br />
 
       <input
         type="password"
         placeholder="Password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
       />
-
-      <br />
 
       <button onClick={handleLogin}>Login</button>
     </div>
   );
-  
-
 }
 
 export default Login;
+
