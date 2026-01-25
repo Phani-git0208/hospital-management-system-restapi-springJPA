@@ -7,8 +7,10 @@ import com.example.hospital.management.system.Service.DoctorServiceimpl;
 import com.example.hospital.management.system.Service.PatientServiceimp;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,9 +23,14 @@ public class Controller {
     private final DoctorServiceimpl doctorService;
     private final PatientServiceimp patientService;
 
-    @GetMapping("/admin/doctor")
+    @GetMapping("/admin/doctors")
     public List<DoctorDto> getAllDocters() {
         return doctorService.getAllDocters();
+    }
+
+    @GetMapping("/doctor/{id}")
+    public ResponseEntity<DoctorDto> getdoctorinfo(@PathVariable Long id){
+        return doctorService.getDoctorById(id);
     }
 
     @GetMapping("/public/patient")

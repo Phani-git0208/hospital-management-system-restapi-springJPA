@@ -21,6 +21,7 @@ function Login() {
 
     // Save JWT token
     localStorage.setItem("token", data.jwt);
+    localStorage.setItem("userId", data.id);
 
 
      // Get role from token
@@ -29,7 +30,7 @@ function Login() {
 
     // Redirect based on role
     if (role === "ADMIN") {
-      navigate("/admin/doctor");
+      navigate("/admin/doctors");
     } else if (role === "DOCTOR") {
       navigate("/doctor");
     } else if (role === "PATIENT") {

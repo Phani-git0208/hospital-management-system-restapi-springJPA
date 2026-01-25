@@ -12,7 +12,7 @@ public class DoctorDto {
 
     private Long id;
     private String name;
-    private Specialization specialization;
+    private String specialization;
     private String email;
     private String phone;
     private int experienceYears;

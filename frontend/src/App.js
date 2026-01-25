@@ -4,6 +4,7 @@ import Signup from "./pages/Signup";
 import Patients from "./pages/Patients";
 import Doctors from "./pages/Doctors";
 import MyProfile from "./pages/MyProfile";
+import Doctordashboard from "./pages/Doctordashboard";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path="/patients" element={<Patients />} />
       <Route path="/admin/doctors" element={<Doctors />} />
        <Route path="/me" element={<MyProfile />} />
+       <Route path="/doctor" element={<Doctordashboard />} />
     </Routes>
   );
 }

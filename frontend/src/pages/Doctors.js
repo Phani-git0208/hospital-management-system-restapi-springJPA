@@ -4,7 +4,7 @@ function Doctors() {
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/admin/doctor", {
+    fetch("http://localhost:8080/admin/doctors", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
@@ -19,9 +19,9 @@ function Doctors() {
 
   return (
     <div>
-      <h2>Doctors (Protected)</h2>
+      <h1>Doctors</h1>
       {doctors.map(d => (
-        <p key={d.id}>{d.name}</p>
+        <p key={d.id}>{d.id}. {d.name}/dept: {d.specialization}</p>
       ))}
     </div>
   );
