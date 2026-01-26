@@ -2,6 +2,7 @@ package com.example.hospital.management.system.Controller;
 
 import com.example.hospital.management.system.Dto.LoginRequestDto;
 import com.example.hospital.management.system.Dto.LoginResponceDto;
+import com.example.hospital.management.system.Dto.SignUpRequestDto;
 import com.example.hospital.management.system.Dto.SignUpResponceDto;
 import com.example.hospital.management.system.Security.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-   public ResponseEntity<SignUpResponceDto> signUp(@RequestBody LoginRequestDto signUpRequestDto){
+   public ResponseEntity<SignUpResponceDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto){
       return ResponseEntity.ok(authService.signUp(signUpRequestDto));
 }
 }
