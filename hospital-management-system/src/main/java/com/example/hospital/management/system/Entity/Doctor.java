@@ -27,6 +27,11 @@ public class Doctor {
     private String phone;
     private int experienceYears;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    private User user;
+
+
     // Inverse side
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointments = new ArrayList<>();

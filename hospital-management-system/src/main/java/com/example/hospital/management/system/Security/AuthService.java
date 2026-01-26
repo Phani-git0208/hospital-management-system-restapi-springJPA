@@ -2,6 +2,7 @@ package com.example.hospital.management.system.Security;
 
 import com.example.hospital.management.system.Dto.LoginRequestDto;
 import com.example.hospital.management.system.Dto.LoginResponceDto;
+import com.example.hospital.management.system.Dto.SignUpRequestDto;
 import com.example.hospital.management.system.Dto.SignUpResponceDto;
 import com.example.hospital.management.system.Entity.User;
 import com.example.hospital.management.system.Entity.type.Role;
@@ -27,7 +28,7 @@ public class AuthService {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequestDto.getUsername(),
+                        loginRequestDto.getEmail(),
                         loginRequestDto.getPassword()
                 )
         );
@@ -37,16 +38,26 @@ public class AuthService {
 
     }
 
-    public SignUpResponceDto signUp(LoginRequestDto signUpRequestDto){
-        User user =  userRepository.findByUsername(signUpRequestDto.getUsername()).orElse(null);
-        if(user != null)throw new IllegalArgumentException("already exists");
-        user = userRepository.save(user.builder()
-                .username(signUpRequestDto.getUsername())
-                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-                .role(Role.PATIENT)
-                .build()
+    public SignUpResponceDto signUp(SignUpRequestDto signUpRequestDto) {
+
+        // 1. Check if email already exists
+        User user = userRepository.findByEmail(signUpRequestDto.getEmail()).orElse(null);
+        if (user != null) {
+            throw new IllegalArgumentException("already exists");
+        }
+
+        // 2. Create user correctly using Lombok builder
+        user = userRepository.save(
+                User.builder()
+                        .name(signUpRequestDto.getName())
+                        .email(signUpRequestDto.getEmail())
+                        .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
+                        .role(userRepository.count() == 0 ? Role.ADMIN : Role.PATIENT)
+                        .build()
         );
 
-        return new SignUpResponceDto(user.getId(), user.getUsername());
+        // 3. Return response
+        return new SignUpResponceDto(user.getId(), user.getEmail());
     }
+
 }
