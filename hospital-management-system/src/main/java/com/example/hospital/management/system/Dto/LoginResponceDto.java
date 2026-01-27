@@ -1,6 +1,7 @@
 package com.example.hospital.management.system.Dto;
 
 
+import com.example.hospital.management.system.Entity.type.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginResponceDto {
 
-    String jwt;
-    Long id;
+   private String jwt;
+   private Long id;
+   private Role role;
 
 };

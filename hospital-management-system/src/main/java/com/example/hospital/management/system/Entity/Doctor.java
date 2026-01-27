@@ -20,10 +20,8 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
     private String specialization;
-    private String email;
+
     private String phone;
     private int experienceYears;
 
@@ -38,6 +36,8 @@ public class Doctor {
 
     @ManyToMany(mappedBy = "docters")
     private Set<Department> department = new HashSet<>();
+
+
 }
 
 

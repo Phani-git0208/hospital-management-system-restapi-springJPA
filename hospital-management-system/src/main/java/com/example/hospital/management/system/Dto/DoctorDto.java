@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DoctorDto {
-
     private Long id;
     private String name;
-    private String specialization;
     private String email;
+
+    private String specialization;
     private String phone;
     private int experienceYears;
 }

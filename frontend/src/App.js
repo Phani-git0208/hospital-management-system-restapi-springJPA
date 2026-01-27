@@ -5,6 +5,8 @@ import Patients from "./pages/Patients";
 import Doctors from "./pages/Doctors";
 import MyProfile from "./pages/MyProfile";
 import Doctordashboard from "./pages/Doctordashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+
 
 
 function App() {
@@ -12,6 +14,8 @@ function App() {
     <Routes>
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/signup" element={<Signup />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
       <Route path="/patients" element={<Patients />} />
       <Route path="/admin/doctors" element={<Doctors />} />
        <Route path="/me" element={<MyProfile />} />

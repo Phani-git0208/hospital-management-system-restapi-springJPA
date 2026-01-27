@@ -5,10 +5,9 @@ function Doctordashboard() {
   const [doctor, setDoctor] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // or whatever key you use
-    const doctorId = localStorage.getItem("userId"); // you said JWT contains userId
+    const token = localStorage.getItem("token");
 
-    axios.get(`http://localhost:8080/doctor/${doctorId}`, {
+    axios.get("http://localhost:8080/doctor/profile", {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -24,12 +23,12 @@ function Doctordashboard() {
   if (!doctor) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div style={{ padding: "30px" }}>
       <h2>Doctor Dashboard</h2>
-      <p><b>ID:</b> {doctor.id}</p>
-      <p><b>Name:</b> {doctor.name}</p>
+
+      <p><b>Name:</b> {doctor.user?.name}</p>
+      <p><b>Email:</b> {doctor.user?.email}</p>
       <p><b>Specialization:</b> {doctor.specialization}</p>
-      <p><b>Email:</b> {doctor.email}</p>
       <p><b>Phone:</b> {doctor.phone}</p>
       <p><b>Experience:</b> {doctor.experienceYears} years</p>
     </div>

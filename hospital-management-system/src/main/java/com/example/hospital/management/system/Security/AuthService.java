@@ -34,7 +34,7 @@ public class AuthService {
         );
         User user = (User) authentication.getPrincipal();
         String token = authUtil.generateAccessToken( user);
-        return new LoginResponceDto(token,user.getId());
+        return new LoginResponceDto(token,user.getId(),user.getRole());
 
     }
 

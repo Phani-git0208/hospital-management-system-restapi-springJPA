@@ -1,69 +1,82 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "./services/authService";
-
-function getRoleFromToken(token) {
-  const payload = JSON.parse(atob(token.split(".")[1]));
-  return payload.role;
-}
+import "./Login.css";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-  try {
-    const data = await loginUser(username, password);
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-    console.log("Backend response:", data);
+      if (!response.ok) {
+        alert("Invalid email or password");
+        return;
+      }
 
-    // Save JWT token
-    localStorage.setItem("token", data.jwt);
-    localStorage.setItem("userId", data.id);
+      const data = await response.json();
+      console.log("Login success:", data);
 
+      // ✅ FIXED: store correct fields from backend
+      localStorage.setItem("token", data.jwt);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("userId", data.id);
 
-     // Get role from token
-    const role = getRoleFromToken(data.jwt);
-    console.log("Role:", role);
+      alert("Login successful!");
 
-    // Redirect based on role
-    if (role === "ADMIN") {
-      navigate("/admin/doctors");
-    } else if (role === "DOCTOR") {
-      navigate("/doctor");
-    } else if (role === "PATIENT") {
-      navigate("/me");
-    } else {
-      alert("Unknown role");
+      // ✅ Role-based redirect
+      if (data.role === "ADMIN") {
+        navigate("/admin/dashboard");
+      } else if (data.role === "DOCTOR") {
+        navigate("/doctor");
+      } else {
+        navigate("/patients");
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Server error");
     }
-
-    alert("Login successful, token saved");
-  } catch (error) {
-    console.error("Login failed:", error);
-    alert("Login failed");
-  }
-};
-
+  };
 
   return (
-    <div>
-      <input
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
+    <div className="login-container">
+      <div className="login-card">
+        <h2>Welcome Back</h2>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
 
-      <button onClick={handleLogin}>Login</button>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+
+        <button onClick={handleLogin}>Login</button>
+
+        <p onClick={() => navigate("/auth/signup")}>
+          Don’t have an account? <span>Signup</span>
+        </p>
+      </div>
     </div>
   );
 }
 
 export default Login;
+
+
 

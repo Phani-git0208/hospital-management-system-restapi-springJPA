@@ -1,62 +1,47 @@
 package com.example.hospital.management.system.Service;
 
-
 import com.example.hospital.management.system.Dto.DoctorDto;
 import com.example.hospital.management.system.Entity.Doctor;
-import org.modelmapper.ModelMapper;   // ✅ CORRECT
-import com.example.hospital.management.system.repository.DocterRepository;
+import com.example.hospital.management.system.Entity.User;
+import com.example.hospital.management.system.repository.DoctorRepository;
+import com.example.hospital.management.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import static java.util.Arrays.stream;
-
+import java.security.Principal;
 
 @Service
 @RequiredArgsConstructor
-public class DoctorServiceimpl implements DocterService{
+public class DoctorServiceimpl implements DoctorService {
 
-    private final DocterRepository doctorRepository;
-    private final ModelMapper modelMapper;
+    private final DoctorRepository doctorRepository;
+    private final UserRepository userRepository;
 
-    @Override
-    public List<DoctorDto> getAllDocters() {
-        return  doctorRepository.findAll()
-        .stream()
-                .map(doc -> modelMapper.map(doc , DoctorDto.class))
-                .toList();
+    public Doctor saveDoctorProfile(DoctorDto dto, Principal principal) {
 
+        User user = userRepository
+                .findByEmail(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Doctor doctor = new Doctor();
+        doctor.setSpecialization(dto.getSpecialization());
+        doctor.setPhone(dto.getPhone());
+        doctor.setExperienceYears(dto.getExperienceYears());
+        doctor.setUser(user);
+
+        return doctorRepository.save(doctor);
     }
 
-    @Override
-    public List<DoctorDto> getDoctorsAndDept() {
-        return doctorRepository.findAll()
-                .stream().map((element) -> modelMapper.map(element, DoctorDto.class))
-                .toList();
+    public Doctor getDoctorProfile(Principal principal) {
+
+        User user = userRepository
+                .findByEmail(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return doctorRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Doctor profile not found"));
     }
-
-
-    @Override
-    public ResponseEntity<DoctorDto> getDoctorById(Long id) {
-        Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
-
-        DoctorDto dto = new DoctorDto(
-                doctor.getId(),
-                doctor.getName(),
-                doctor.getSpecialization(),
-                doctor.getEmail(),
-                doctor.getPhone(),
-                doctor.getExperienceYears()
-        );
-
-        return ResponseEntity.ok(dto);
-    }
-    }
-
+}
 
 
 

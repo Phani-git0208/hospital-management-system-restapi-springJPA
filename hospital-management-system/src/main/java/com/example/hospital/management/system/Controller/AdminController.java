@@ -1,13 +1,13 @@
 package com.example.hospital.management.system.Controller;
 
-import com.example.hospital.management.system.Dto.DoctorRequest;
-import com.example.hospital.management.system.Entity.User;
-import com.example.hospital.management.system.Entity.type.Role;
+import com.example.hospital.management.system.Dto.DoctorDto;
+import com.example.hospital.management.system.Entity.Doctor;
 import com.example.hospital.management.system.Service.AdminService;
-import com.example.hospital.management.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -16,15 +16,10 @@ public class AdminController {
 
     private final AdminService adminService;
 
-
+    // ✅ Admin can view all doctors
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/assign-doctor/{userId}")
-    public String promoteToDoctor(@PathVariable Long userId,
-                                    @RequestBody DoctorRequest request) {
-
-        adminService.assignDoctorRole(userId, request);
-        return "User promoted to DOCTOR";
+    @GetMapping("/doctors")
+    public List<DoctorDto> getAllDoctors() {
+        return adminService.getAllDoctors();
     }
-
-
 }
