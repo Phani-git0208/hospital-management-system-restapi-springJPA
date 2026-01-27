@@ -20,13 +20,11 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+
 
     private int age;
 
-    @Column(unique = true)
-    private String email;
+
 
     private String gender;
 
@@ -43,6 +41,10 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointment;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 }

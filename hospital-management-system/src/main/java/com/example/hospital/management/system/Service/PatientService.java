@@ -9,4 +9,10 @@ public interface PatientService  {
     public List<PatientDto> getAllPatient();
     public List<PatientDto> getPatientsWithAppointments();
 
+    // ✅ NEW
+    PatientDto getMyProfile(String email);
+
+    // ✅ NEW
+    PatientDto updateMyProfile(String email, PatientDto patientDto);
+
 }

@@ -4,8 +4,10 @@ import com.example.hospital.management.system.Dto.LoginRequestDto;
 import com.example.hospital.management.system.Dto.LoginResponceDto;
 import com.example.hospital.management.system.Dto.SignUpRequestDto;
 import com.example.hospital.management.system.Dto.SignUpResponceDto;
+import com.example.hospital.management.system.Entity.Patient;
 import com.example.hospital.management.system.Entity.User;
 import com.example.hospital.management.system.Entity.type.Role;
+import com.example.hospital.management.system.repository.PatientRepository;
 import com.example.hospital.management.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +25,9 @@ public class AuthService {
     private final AuthUtil authUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PatientRepository patientRepository;
 
-    public LoginResponceDto login(LoginRequestDto loginRequestDto){
+    public LoginResponceDto login(LoginRequestDto loginRequestDto) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -33,31 +36,35 @@ public class AuthService {
                 )
         );
         User user = (User) authentication.getPrincipal();
-        String token = authUtil.generateAccessToken( user);
-        return new LoginResponceDto(token,user.getId(),user.getRole());
+        String token = authUtil.generateAccessToken(user);
+        return new LoginResponceDto(token, user.getId(), user.getRole());
 
     }
 
     public SignUpResponceDto signUp(SignUpRequestDto signUpRequestDto) {
 
         // 1. Check if email already exists
-        User user = userRepository.findByEmail(signUpRequestDto.getEmail()).orElse(null);
-        if (user != null) {
+        User existingUser = userRepository.findByEmail(signUpRequestDto.getEmail()).orElse(null);
+        if (existingUser != null) {
             throw new IllegalArgumentException("already exists");
         }
 
-        // 2. Create user correctly using Lombok builder
-        user = userRepository.save(
+        // 2. Create user
+        User user = userRepository.save(
                 User.builder()
                         .name(signUpRequestDto.getName())
                         .email(signUpRequestDto.getEmail())
                         .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-                        .role(userRepository.count() == 0 ? Role.ADMIN : Role.PATIENT)
+                        .role(Role.PATIENT)   // since only patients now
                         .build()
         );
 
-        // 3. Return response
+        // 3. ✅ Create empty Patient linked to this user
+        Patient patient = new Patient();
+        patient.setUser(user);
+        patientRepository.save(patient);
+
+        // 4. Return response
         return new SignUpResponceDto(user.getId(), user.getEmail());
     }
-
 }

@@ -29,24 +29,24 @@ import java.util.List;
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors ->cors.configurationSource(corsConfigurationSource()))   // ✅ ENABLE CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
 
-                        // ✅ ROLE BASED SECURITY
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/doctor/**").hasRole("DOCTOR")
-                        .requestMatchers("/patient/**").hasRole("PATIENT")
+                        // ✅ FIXED: allow any authenticated user (no role check)
+                        .requestMatchers("/patient/**").authenticated()
 
                         .anyRequest().authenticated()
                 )
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
         public AuthenticationManager authenticationManager(

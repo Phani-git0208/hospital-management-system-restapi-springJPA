@@ -25,21 +25,14 @@ function Login() {
       const data = await response.json();
       console.log("Login success:", data);
 
-      // ✅ FIXED: store correct fields from backend
+      // Store token and userId
       localStorage.setItem("token", data.jwt);
-      localStorage.setItem("role", data.role);
       localStorage.setItem("userId", data.id);
 
       alert("Login successful!");
 
-      // ✅ Role-based redirect
-      if (data.role === "ADMIN") {
-        navigate("/admin/dashboard");
-      } else if (data.role === "DOCTOR") {
-        navigate("/doctor");
-      } else {
-        navigate("/patients");
-      }
+      // ✅ Always go to MyProfile after login
+      navigate("/myprofile");
 
     } catch (error) {
       console.error(error);
@@ -77,6 +70,7 @@ function Login() {
 }
 
 export default Login;
+
 
 
 

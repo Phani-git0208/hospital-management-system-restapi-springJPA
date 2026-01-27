@@ -28,7 +28,7 @@ public class AuthUtil {
                 .claim("role", user.getRole().name())
                 .claim("userId",user.getId().toString())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*10*10))
                 .signWith(getSecretKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
