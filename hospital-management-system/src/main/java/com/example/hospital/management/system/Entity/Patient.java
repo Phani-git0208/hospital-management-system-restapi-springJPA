@@ -1,6 +1,7 @@
 package com.example.hospital.management.system.Entity;
 
 import com.example.hospital.management.system.Entity.type.bloodgroup;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class Patient {
     @JsonManagedReference
     private Insurance insurance;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointment;
 

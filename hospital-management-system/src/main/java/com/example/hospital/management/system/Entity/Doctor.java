@@ -1,5 +1,6 @@
 package com.example.hospital.management.system.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,19 +20,19 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
 
     private String specialization;
 
     private String phone;
     private int experienceYears;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", unique = true, nullable = false)
-    private User user;
+
 
 
     // Inverse side
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Appointment> appointments = new ArrayList<>();
 
     @ManyToMany(mappedBy = "docters")

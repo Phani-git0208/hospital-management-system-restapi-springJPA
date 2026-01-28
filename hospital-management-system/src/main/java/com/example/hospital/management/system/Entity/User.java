@@ -35,8 +35,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Doctor doctor;
+
 
     @Override
     public String getUsername(){
