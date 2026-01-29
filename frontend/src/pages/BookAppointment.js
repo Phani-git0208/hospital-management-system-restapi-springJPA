@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function BookAppointment() {
   const [doctors, setDoctors] = useState([]);
@@ -8,6 +9,7 @@ function BookAppointment() {
   const [reason, setReason] = useState("");
 
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   // Load doctors
   useEffect(() => {
@@ -49,11 +51,14 @@ function BookAppointment() {
         setDate("");
         setTime("");
         setReason("");
-      })
-      .catch(err => {
+
+  navigate("/dashboard"); // ✅ go back to dashboard
+})
+.catch(err => {
         console.error(err);
         alert("Failed to book appointment");
       });
+
   };
 
   return (

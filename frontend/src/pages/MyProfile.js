@@ -31,12 +31,6 @@ function MyProfile() {
         setPhone(data.phone || "");
         setGender(data.gender || "");
         setBloodGroup(data.bloodGroup || "");
-
-        // ✅ If profile already complete → redirect to dashboard
-        if (data.age && data.phone && data.gender && data.bloodGroup) {
-          navigate("/dashboard");
-        }
-
         setLoading(false);
       })
       .catch(err => {
@@ -48,7 +42,7 @@ function MyProfile() {
 
   // Save updated profile
   const handleSave = () => {
-    fetch("http://localhost:8080/patient/me", {
+    fetch("http://localhost:8080/patient/EditProfile", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -105,34 +99,31 @@ function MyProfile() {
         onChange={e => setPhone(e.target.value)}
       /><br /><br />
 
-      <input
-        placeholder="Gender"
-        value={gender}
-        onChange={e => setGender(e.target.value)}
-      /><br /><br />
+     <select value={gender} onChange={e => setGender(e.target.value)}>
+  <option value="">Select Gender</option>
+  <option value="MALE">Male</option>
+  <option value="FEMALE">Female</option>
+  <option value="OTHER">Other</option>
+</select>
+<br /><br />
 
-      <input
-        placeholder="Blood Group (e.g. O_POSITIVE)"
-        value={bloodGroup}
-        onChange={e => setBloodGroup(e.target.value)}
-      /><br /><br />
+      <select value={bloodGroup} onChange={e => setBloodGroup(e.target.value)}>
+  <option value="">Select Blood Group</option>
+  <option value="A_POS">A+</option>
+  <option value="A_NEG">A-</option>
+  <option value="B_POS">B+</option>
+  <option value="B_NEG">B-</option>
+  <option value="AB_POS">AB+</option>
+  <option value="AB_NEG">AB-</option>
+  <option value="O_POS">O+</option>
+  <option value="O_NEG">O-</option>
+</select>
+<br /><br />
 
       <button onClick={handleSave}>Save Profile</button>
 
       <hr />
 
-      <h3>Appointments</h3>
-      {profile.appointments && profile.appointments.length > 0 ? (
-        profile.appointments.map(a => (
-          <div key={a.id} style={{ border: "1px solid gray", margin: "10px", padding: "10px" }}>
-            <p>Doctor: {a.doctorName}</p>
-            <p>Date: {a.date}</p>
-            <p>Status: {a.status}</p>
-          </div>
-        ))
-      ) : (
-        <p>No appointments yet</p>
-      )}
     </div>
   );
 }

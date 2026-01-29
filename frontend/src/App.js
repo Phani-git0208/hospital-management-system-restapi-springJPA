@@ -14,6 +14,7 @@ function App() {
       <Route path="/auth/signup" element={<Signup />} />
 
       {/* Patient routes */}
+      <Route path="/me" element={<MyProfile />} />
       <Route path="/myprofile" element={<MyProfile />} />
       <Route path="/dashboard" element={<Dashboard />} />
 

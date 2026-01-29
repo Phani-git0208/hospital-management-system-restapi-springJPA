@@ -22,7 +22,7 @@ public class PatientController {
     }
 
     // ✅ PUT update logged-in patient's profile
-    @PutMapping("/me")
+    @PutMapping("/EditProfile")
     public PatientDto updateMyProfile(Authentication authentication,
                                       @RequestBody PatientDto dto) {
         String email = authentication.getName();
