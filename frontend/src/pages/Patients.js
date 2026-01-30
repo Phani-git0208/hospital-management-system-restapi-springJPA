@@ -4,7 +4,7 @@ function Patients() {
   const [patients, setPatients] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/public/patient")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/public/patient`)
       .then(res => res.json())
       .then(data => setPatients(data))
       .catch(err => console.error(err));

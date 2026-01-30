@@ -15,7 +15,7 @@ function MyProfile() {
 
   // Load profile
   useEffect(() => {
-    fetch("http://localhost:8080/patient/me", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/patient/me`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -42,7 +42,7 @@ function MyProfile() {
 
   // Save updated profile
   const handleSave = () => {
-    fetch("http://localhost:8080/patient/EditProfile", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/patient/EditProfile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

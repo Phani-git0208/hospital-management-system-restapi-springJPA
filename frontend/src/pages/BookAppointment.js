@@ -13,7 +13,7 @@ function BookAppointment() {
 
   // Load doctors
   useEffect(() => {
-    fetch("http://localhost:8080/public/doctors")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/public/doctors`)
       .then(res => res.json())
       .then(data => setDoctors(data))
       .catch(err => console.error("Failed to load doctors", err));
@@ -25,7 +25,7 @@ function BookAppointment() {
       return;
     }
 
-    fetch("http://localhost:8080/patient/appointments", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/patient/appointments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

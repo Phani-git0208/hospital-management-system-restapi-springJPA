@@ -9,13 +9,16 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
+        
+
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ email, password })
       });
+      console.log("API BASE:", process.env.REACT_APP_API_BASE_URL);
 
       if (!response.ok) {
         alert("Invalid email or password");

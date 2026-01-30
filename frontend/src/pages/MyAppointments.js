@@ -5,7 +5,7 @@ function MyAppointments() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:8080/patient/appointments", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/patient/appointments`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

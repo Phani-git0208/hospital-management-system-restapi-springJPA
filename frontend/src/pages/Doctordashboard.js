@@ -7,7 +7,7 @@ function Doctordashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    axios.get("http://localhost:8080/doctor/profile", {
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/doctor/profile`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

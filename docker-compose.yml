@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-hospital
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 2902
+      MYSQL_DATABASE: hospitalmanagementsystem
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  backend:
+    image: hospital-backend
+    container_name: hospital-backend
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hospitalmanagementsystem
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 2902
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+  frontend:
+      build:
+        context: ./frontend
+      container_name: hospital-frontend
+      ports:
+        - "3000:80"
+      depends_on:
+        - backend
+
+volumes:
+  mysql-data:

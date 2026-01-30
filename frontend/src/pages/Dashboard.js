@@ -17,7 +17,7 @@ function Dashboard() {
     }
 
     // Load profile
-    fetch("http://localhost:8080/patient/me", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/patient/me`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
@@ -28,7 +28,7 @@ function Dashboard() {
       .catch(() => navigate("/auth/login"));
 
     // Load appointments
-    fetch("http://localhost:8080/patient/appointments", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/patient/appointments`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())

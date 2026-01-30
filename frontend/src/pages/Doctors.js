@@ -4,7 +4,7 @@ function Doctors() {
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/admin/doctors", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/admin/doctors`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
