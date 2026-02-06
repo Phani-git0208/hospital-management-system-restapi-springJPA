@@ -5,11 +5,13 @@ import Dashboard from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
 import BookAppointment from "./pages/BookAppointment";
 import MyAppointments from "./pages/MyAppointments";
+import { Navigate } from "react-router-dom";
 
 function App() {
   return (
     <Routes>
       {/* Auth routes */}
+      <Route path="/" element={<Navigate to="/signup" />} />
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/signup" element={<Signup />} />
 
