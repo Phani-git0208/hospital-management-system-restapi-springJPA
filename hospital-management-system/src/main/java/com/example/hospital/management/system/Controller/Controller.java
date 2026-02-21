@@ -13,7 +13,7 @@ public class Controller {
    // private final DoctorServiceimpl doctorService;
   //  private final PatientServiceimp patientService;
 
- //   @GetMapping("/admin/doctors")
+ //   @GetMapping("/admin/doctor")
    // public List<DoctorDto> getAllDocters() {
       //  return doctorService.getAllDocters();
     }
